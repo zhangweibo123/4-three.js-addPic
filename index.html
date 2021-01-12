@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="./three.js"></script>
+    <script src="./WebGL.js"></script>
+    <script src="./OrbitControls.js"></script>
+    <script src="./stats.min.js"></script>
+    <script src="./initThree.js"></script>
+    <title>init</title>
+    <style>
+      * {
+        padding: 0px;
+        margin: 0px;
+      }
+      #three {
+        width: 100vw;
+        height: 100vh;
+        position: relative;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="three"></div>
+  </body>
+  <script>
+    init(window.innerWidth, window.innerHeight, false, false);
+    // 定义材质
+    var geometry = new THREE.BoxGeometry(
+      window.innerWidth - 100,
+      window.innerHeight,
+      1
+    );
+    // 添加地面
+
+    var textureBaidu = new THREE.TextureLoader().load("./baidu.png");
+    var textureGoogle = new THREE.TextureLoader().load("./google.png");
+
+    var skyBoxMaterialG = new THREE.MeshBasicMaterial({
+      map: textureBaidu,
+    });
+    var skyBoxMaterialB = new THREE.MeshBasicMaterial({
+      map: textureGoogle,
+    });
+    // var skyBoxGeometry = new THREE.BoxGeometry(5000, 5000, 5000);
+    // var skyBox = new THREE.Mesh(skyBoxGeometry, skyBoxMaterial);
+
+    var ground = new THREE.Mesh(geometry, [
+      null,
+      null,
+      null,
+      null,
+      skyBoxMaterialG,
+      skyBoxMaterialB,
+    ]);
+    ground.position.set(0, 0, 0);
+    ground.rotation.z = Math.PI;
+    // ground.receiveShadow = true;
+    scene.add(ground);
+
+    function render() {
+      // 循环动画
+      requestAnimationFrame(render);
+      renderer.render(scene, camera);
+      // stats.update();
+    }
+    render();
+  </script>
+</html>
